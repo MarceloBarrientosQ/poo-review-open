@@ -49,7 +49,5 @@ public class Main {
         System.out.println("Order Data" + salesOrder.getOrderDate());
         System.out.println("Customer Id" + salesOrder.getCustomerId());
         System.out.println("Total Amount" + salesOrder.getTotalAmountAsString());
-
-
     }
 }
