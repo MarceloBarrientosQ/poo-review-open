@@ -1,17 +1,55 @@
 package com.acme;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
+import com.acme.crm.Customer;
+import com.acme.sales.aggregates.SalesOrder;
+import com.acme.sales.valueObjects.ProductId;
+import com.acme.shared.domain.model.valueObject.Address;
+import com.acme.shared.domain.model.valueObject.Money;
+
+import java.math.BigDecimal;
+import java.util.Currency;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+       // Shared Content
+        Address address = new Address("Av. General Salaverry UPC",
+                "Lima",
+                "1234556",  "PERU");
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        Address anotherAddress = new Address
+                ("Av. General Primavera UPC",
+                "Lima",
+                "1234556",  "PERU");
+
+        System.out.println( "First Address" + address);
+        System.out.println( "Second Address" + anotherAddress);
+
+        // CRM context
+        System.out.println( "Creating a customer.....");
+
+        Customer customer = new Customer("Juan Perez", "u20221a333@upc.edu.pe", address);
+        System.out.println("Customer Contact Info: " + customer.getContactInfo());
+        System.out.println("Updating Customer Contact Info.....");
+        customer.updateContactInfo(customer.getEmail(), anotherAddress);
+        System.out.println("Customer Contact Info: " + customer.getContactInfo());
+
+        // Sales Order context
+        System.out.println("Creating a sales order.....");
+        SalesOrder salesOrder = new SalesOrder(customer.getCustomerId());
+
+        Money price = new Money(new BigDecimal
+                ("29.99"), Currency.getInstance("USD"));
+
+        ProductId productId = new ProductId();
+
+        salesOrder.addItem(productId, 2, price);
+
+        System.out.println("Sales Order Id" + salesOrder.getId());
+        System.out.println("Order Data" + salesOrder.getOrderDate());
+        System.out.println("Customer Id" + salesOrder.getCustomerId());
+        System.out.println("Total Amount" + salesOrder.getTotalAmountAsString());
+
+
     }
 }
